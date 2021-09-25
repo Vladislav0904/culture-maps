@@ -1,2 +1,2 @@
 # culture-maps
-Web realization of project
+Web realization of project using Yandex.Maps JavaScript API
