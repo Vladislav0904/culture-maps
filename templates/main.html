@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Создание и удаление</title>
+    <!--
+        Укажите свой API-ключ. Тестовый ключ НЕ БУДЕТ работать на других сайтах.
+        Получить ключ можно в Кабинете разработчика: https://developer.tech.yandex.ru/keys/
+    -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=804253a3-2f7d-4e44-806e-6ce16888d2f1"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        var myMap;
+        // Дождёмся загрузки API и готовности DOM.
+        ymaps.ready(init);
+        var objectManager = new ymaps.ObjectManager({clusterize: true});
+        var currentId = 0;
+
+        function init() {
+            // Создание экземпляра карты и его привязка к контейнеру с
+            // заданным id ("map").
+            myMap = new ymaps.Map('map', {
+                // При инициализации карты обязательно нужно указать
+                // её центр и коэффициент масштабирования.
+                center: [55.803034,38.052809], // Москва
+                zoom: 9
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+            var divlist = {{ list1|default("list") | tojson }};
+            for (let i = 0; i < divlist.length; i++) { // выведет 0, затем 1, затем 2
+                myPlacemark = new ymaps.Placemark(divlist[i]);
+                myMap.geoObjects.add(myPlacemark);
+
+                myPlacemark.events
+                    .add('click', function (e) {
+                        // Ссылку на объект, вызвавший событие,
+                        // можно получить из поля 'target'.
+                        if (divlist[i][0] == 55.103034)
+                            window.location.replace("http://127.0.0.1:5000/kolomna");
+
+                        else
+                            window.location.replace("http://127.0.0.1:5000/krasnogorsk");
+
+                    })
+            }
+
+
+        }
+    </script>
+    <style>
+        body, html {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+</body>
+
+</html>
